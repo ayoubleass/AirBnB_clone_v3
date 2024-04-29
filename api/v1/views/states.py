@@ -29,18 +29,21 @@ def show_state(state_id):
     return jsonify(state.to_dict())
 
 
-@app_views.route("/states/<state_id>", methods=['DELETE'],strict_slashes=False)
+@app_views.route(
+    "/states/<state_id>",
+    methods=['DELETE'],
+    strict_slashes=False)
 def delete_state(state_id):
-    """Return a specifique State object or raise a 404 error"""
+    """Delete a specifique State object or raise a 404 error"""
     state = storage.get("State", state_id)
-    if state == None:
+    if state is None:
         abort(404)
     storage.delete(state)
+    storage.save()
     return jsonify({}), 201
 
 
-
-@app_views.route("/states", methods=['POST'],strict_slashes=False)
+@app_views.route("/states", methods=['POST'], strict_slashes=False)
 def create_state():
     request_body = request.get_json()
     if request_body is None or "name" not in request_body:
@@ -50,18 +53,17 @@ def create_state():
     return jsonify(state.to_dict()), 201
 
 
-@app_views.route("/states/<state_id>", methods=['PUT'],strict_slashes=False)
+@app_views.route("/states/<state_id>", methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """Return a specifique State object or raise a 404 error"""
     state = storage.get("State", state_id)
     request_body = request.get_json()
-    if state == None:
+    if state is None:
         abort(404)
     if request_body is None or "name" not in request_body:
-         abort(404)
+        abort(404)
     for key, value in request_body.items():
         if key not in ["id", "created_at", "updates_at"]:
-           setattr(state, key, value)
+            setattr(state, key, value)
     state.save()
     return jsonify(state.to_dict()), 201
-
