@@ -7,7 +7,6 @@ from api.v1.views import app_views
 from os import getenv
 import json
 from flask import jsonify
-from werkzeug.exceptions import BadRequest
 app = Flask(__name__)
 app.register_blueprint(app_views)
 
@@ -16,12 +15,15 @@ app.register_blueprint(app_views)
 def close_storage(exception):
     storage.close()
 
+@app.errorhandler(400)
+def handle_bad_request(error):
+    return jsonify(error=error.description), 400
 
 @app.errorhandler(404)
 def not_found(error):
     """Handler for 404 errors that returns a
     JSON-formatted 404 status code response"""
-    return jsonify(error="Not found"), 400
+    return jsonify(error="Not found"), 404
 
 
 if __name__ == "__main__":
