@@ -10,6 +10,7 @@ print("State objects: {}".format(storage.count(State)))
 
 #print(storage.all("State"))
 first_state_id = list(storage.all(State).values())[1].id
-#print(first_state_id)
-print("First state: {}".format(storage.get(State, first_state_id)))
-
+print(first_state_id)
+state = storage.get(State, first_state_id)
+#print("First state: {}".format(storage.get(State, first_state_id)))
+print(type(state))
