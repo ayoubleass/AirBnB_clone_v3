@@ -14,6 +14,9 @@ from flask import abort
 @app_views.route("/states/<state_id>/cities", strict_slashes=False)
 def show_cities(state_id):
     """Return all cities in state"""
+    state = storage.get("State", state_id)
+    if state is None:
+        abort(404)
     result = []
     for city in storage.all("City").items():
         if state_id == city[1].state_id:
@@ -52,6 +55,9 @@ def delete_city(city_id):
     strict_slashes=False)
 def create_city(state_id):
     """Create a city """
+    state = storage.get("State", state_id)
+    if state is None:
+        abort(404)
     request_body = request.get_json()
     if not request.is_json:
         abort(400)
