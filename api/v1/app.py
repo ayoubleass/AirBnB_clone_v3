@@ -17,6 +17,13 @@ def close_storage(exception):
     """Close the storage"""
     storage.close()
 
+
+@app.errorhandler(400)
+def bad_request(e):
+    """Handle bas request"""
+    return jsonify(error='Not a JSON'), 400
+
+
 @app.errorhandler(404)
 def not_found(error):
     """Handler for 404 errors that returns a

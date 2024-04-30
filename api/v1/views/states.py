@@ -14,9 +14,10 @@ from flask import abort
 @app_views.route("/states/", strict_slashes=False)
 def show_states():
     """Return all states objets"""
-    result = []
-    for state in storage.all("State").items():
-        result.append(state[1].to_dict())
+    states = storage.all("State")
+    if not states:
+        return jsonify({})
+    result = [state.to_dict() for state in states.values()]
     return jsonify(result)
 
 
@@ -47,9 +48,9 @@ def delete_state(state_id):
 def create_state():
     request_body = request.get_json()
     if not request.is_json:
-        abort(400, description="Not a JSON")
+        abort(400)
     if "name" not in request_body:
-        abort(400, description="Missing name")
+        return jsonify(error="Missing name"), 400
     state = State(name=request_body.get("name"))
     state.save()
     return jsonify(state.to_dict()), 201
@@ -63,9 +64,9 @@ def update_state(state_id):
     if state is None:
         abort(404)
     if not request.is_json:
-        abort(400, description="Not a JSON")
-    if "name" not in request_body:
         abort(400)
+    if "name" not in request_body:
+        return jsonify(error="Missing name"), 400
     for key, value in request_body.items():
         if key not in ["id", "created_at", "updates_at"]:
             setattr(state, key, value)
