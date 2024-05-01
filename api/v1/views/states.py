@@ -15,8 +15,8 @@ from flask import abort
 def show_states():
     """Return all states objets"""
     states = storage.all("State")
-    if not states:
-        abort(404)
+    if states is None:
+        return jsonify([])
     result = [state.to_dict() for state in states.values()]
     return jsonify(result)
 
