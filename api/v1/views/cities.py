@@ -21,8 +21,6 @@ def show_cities(state_id):
     for city in storage.all("City").items():
         if state_id == city[1].state_id:
             result.append(city[1].to_dict())
-    if len(result) is 0:
-        abort(404)
     return jsonify(result)
 
 
