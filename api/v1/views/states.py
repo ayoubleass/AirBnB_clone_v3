@@ -25,8 +25,8 @@ def show_states():
 def show_state(state_id):
     """Return a specifique State object or raise a 404 error"""
     state = storage.get("State", state_id)
-    if not state:
-        abort(404)
+    if state is None:
+        return jsonify({})
     return jsonify(state.to_dict())
 
 
