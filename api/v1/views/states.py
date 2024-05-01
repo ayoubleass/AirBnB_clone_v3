@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This script """
+"""This module contains the State end points """
 
 
 from api.v1.views import app_views
@@ -46,6 +46,7 @@ def delete_state(state_id):
 
 @app_views.route("/states", methods=['POST'], strict_slashes=False)
 def create_state():
+    """Create a new state """
     request_body = request.get_json()
     if not request.is_json:
         abort(400)
