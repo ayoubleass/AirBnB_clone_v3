@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This script """
+"""This Module has all the City end points """
 
 
 from api.v1.views import app_views
@@ -35,8 +35,7 @@ def show_city(city_id):
 
 @app_views.route(
     "/cities/<city_id>",
-    methods=['DELETE'],
-    strict_slashes=False)
+    methods=['DELETE'], strict_slashes=False)
 def delete_city(city_id):
     """Delete a specifique City object or raise a 404 error"""
     city = storage.get("City", city_id)
