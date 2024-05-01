@@ -14,8 +14,8 @@ from flask import abort
 @app_views.route("/states/", strict_slashes=False)
 def show_states():
     """Return all states objets"""
-    states = storage.all("State")
-    return jsonify[state.to_dict() for state in states.values()]
+    states = storage.all("State").values()
+    return jsonify([state.to_dict() for state in states])
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False)
