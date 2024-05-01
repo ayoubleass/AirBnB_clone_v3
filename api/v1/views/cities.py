@@ -76,7 +76,7 @@ def update_city(city_id):
         abort(400)
     request_body = request.get_json()
     for key, value in request_body.items():
-        if key not in ["id", "state_id", "created_at ", "updated_at"]:
+        if key not in ["id", "state_id", "created_at", "updated_at"]:
             setattr(city, key, value)
     storage.save()
     return jsonify(city.to_dict()), 200
