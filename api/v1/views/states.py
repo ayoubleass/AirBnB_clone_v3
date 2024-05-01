@@ -15,10 +15,7 @@ from flask import abort
 def show_states():
     """Return all states objets"""
     states = storage.all("State")
-    if states is None:
-        return jsonify([])
-    result = [state.to_dict() for state in states.values()]
-    return jsonify(result)
+    return jsonify[state.to_dict() for state in states.values()]
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False)
@@ -47,9 +44,9 @@ def delete_state(state_id):
 @app_views.route("/states", methods=['POST'], strict_slashes=False)
 def create_state():
     """Create a new state """
-    request_body = request.get_json()
     if not request.is_json:
         abort(400)
+    request_body = request.get_json()
     if "name" not in request_body:
         return jsonify(error="Missing name"), 400
     state = State(name=request_body.get("name"))
@@ -61,11 +58,11 @@ def create_state():
 def update_state(state_id):
     """Return a specifique State object or raise a 404 error"""
     state = storage.get("State", state_id)
-    request_body = request.get_json()
     if state is None:
         abort(404)
     if not request.is_json:
         abort(400)
+    request_body = request.get_json()
     for key, value in request_body.items():
         if key not in ["id", "created_at", "updated_at"]:
             setattr(state, key, value)
