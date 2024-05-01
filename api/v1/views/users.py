@@ -35,7 +35,7 @@ def delete_user(user_id):
     return jsonify({}), 200
 
 
-@app_views.route("/users/<user_id>", methods=['POST'], strict_slashes=False)
+@app_views.route("/users", methods=['POST'], strict_slashes=False)
 def create_user():
     """Create a user"""
     if not request.is_json:
@@ -59,12 +59,8 @@ def update_user(user_id):
     if not request.is_json:
         abort(400)
     request_body = request.get_json()
-    if "email" not in request_body:
-        return jsonify(error="Missing email"), 400
-    if "password" not in request_body:
-        return jsonify(error="Missing password"), 400
     for key, value in request.is_json.items():
-        if key not in ["id", "created_at", "updated_at"]
+        if key not in ["id", "created_at", "updated_at"]:
             setattr(user, key, value)
     storage.save(user)
     return jsonify(user.to_dict()), 200
