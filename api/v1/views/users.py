@@ -59,7 +59,7 @@ def update_user(user_id):
     if not request.is_json:
         abort(400)
     request_body = request.get_json()
-    for key, value in request.is_json.items():
+    for key, value in request_body.items():
         if key not in ["id", "created_at", "updated_at"]:
             setattr(user, key, value)
     storage.save(user)
