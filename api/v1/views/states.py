@@ -16,7 +16,7 @@ def show_states():
     """Return all states objets"""
     states = storage.all("State")
     if not states:
-        return jsonify({})
+        abort(404)
     result = [state.to_dict() for state in states.values()]
     return jsonify(result)
 
