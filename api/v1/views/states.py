@@ -65,8 +65,6 @@ def update_state(state_id):
         abort(404)
     if not request.is_json:
         abort(400)
-    if "name" not in request_body:
-        return jsonify(error="Missing name"), 400
     for key, value in request_body.items():
         if key not in ["id", "created_at", "updates_at"]:
             setattr(state, key, value)
