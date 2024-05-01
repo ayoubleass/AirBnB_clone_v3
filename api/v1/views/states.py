@@ -26,8 +26,7 @@ def show_state(state_id):
     """Return a specifique State object or raise a 404 error"""
     state = storage.get("State", state_id)
     if state is None:
-        #abort(404)
-        return jsonify({})
+        abort(404)
     return jsonify(state.to_dict())
 
 
@@ -65,7 +64,7 @@ def update_state(state_id):
     request_body = request.get_json()
     if state is None:
         abort(404)
-    if not request.is_json:
+    if not request.is_json or "name" not in request_body.items():
         abort(400)
     for key, value in request_body.items():
         if key not in ["id", "created_at", "updated_at"]:
