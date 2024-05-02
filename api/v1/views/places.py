@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""This module contains all the Place end points """
 
 from flask import jsonify, abort, request
 from models import storage
