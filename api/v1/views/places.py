@@ -4,7 +4,7 @@
 from flask import jsonify, abort, request
 from models import storage
 from api.v1.views import app_views
-
+from models.place import Place
 
 @app_views.route(
     '/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
@@ -49,9 +49,9 @@ def create_place(city_id):
         abort(400, "Not a JSON")
     request_body = request.get_json()
     if "user_id" not in request_body:
-        abort(400, "Missing user_id")
+        return jsonify(error="Missing user_id"), 400
     if "name" not in request_body:
-        abort(400, "Missing name")
+        return jsonify("Missing name"), 400
     user_id = request_body["user_id"]
     user = storage.get("User", user_id)
     if user is None:
@@ -70,7 +70,7 @@ def update_place(place_id):
     if place is None:
         abort(404)
     if not request.json:
-        abort(400, "Not a JSON")
+        abort(400)
     request_body = request.get_json()
     for key, value in request_body.items():
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
